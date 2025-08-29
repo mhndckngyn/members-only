@@ -1,8 +1,8 @@
-import db from "./db.js";
+import { query } from "./db.js";
 
 const messageRepository = {
   getAll: async () => {
-    const { rows } = await db.query(
+    const { rows } = await query(
       "select message.id as messageId, message.title as messageTitle, message.content messageContent, message.time messageTime, member.firstname + member.lastname as from message join member on message.member_id = member.id"
     );
 
@@ -12,14 +12,14 @@ const messageRepository = {
   insert: async (messageInsertData) => {
     const { title, content, memberId } = messageInsertData;
 
-    await db.query(
+    await query(
       "insert into message (title, content, member_id) values ($1, $2, $3",
       [title, content, memberId]
     );
   },
 
   delete: async (id) => {
-    await db.query("delete from message where id = $1", [id]);
+    await query("delete from message where id = $1", [id]);
   },
 };
 

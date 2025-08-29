@@ -1,6 +1,8 @@
 const appUrls = {
   login: "/login",
-  home: "/",
+  signup: "/signup",
+  logout: "/logout",
+  home: "/home",
 };
 
 export default appUrls;

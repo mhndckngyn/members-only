@@ -6,6 +6,11 @@
     <title>Clubhaus</title>
   </head>
   <body>
-    Logged in succesfully
+    <% if (locals.user) { %>
+    <h1>Hello, <%= user.firstName %>!</h1>
+    <a href="/logout">Log out</a>
+    <% } %>
+
+    <p>Successful request</p>
   </body>
 </html>

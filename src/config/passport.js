@@ -41,7 +41,7 @@ passport.deserializeUser(async (id, done) => {
     done(null, {
       id: user.id,
       firstName: user.firstname,
-      lastname: user.lastname,
+      lastName: user.lastname,
       email: user.email,
       status: user.status,
     });

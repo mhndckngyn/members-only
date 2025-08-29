@@ -1,4 +1,4 @@
-import db from "./db.js";
+import { query } from "./db.js";
 
 const membershipStatus = {
   normal: "normal",
@@ -8,30 +8,32 @@ const membershipStatus = {
 
 const memberRepository = {
   insert: async (memberInsertData) => {
-    const { username, email, password } = memberInsertData;
+    const { firstName, lastName, email, password } = memberInsertData;
 
-    await db.query(
-      "insert into member (username, email, password, status values ($1, $2, $3, $4)",
-      [username, email, password, membershipStatus.normal]
+    const { rows } = await query(
+      "insert into member (firstname, lastname, email, password, status) values ($1, $2, $3, $4, $5) returning id",
+      [firstName, lastName, email, password, membershipStatus.normal]
     );
+
+    return rows;
   },
 
   updateToSecret: async (id) => {
-    await db.query("update member set status = $1 where id = $2", [
+    await query("update member set status = $1 where id = $2", [
       membershipStatus.secret,
       id,
     ]);
   },
 
   updateToAdmin: async (id) => {
-    await db.query("update member set status = $1 where id = $2", [
+    await query("update member set status = $1 where id = $2", [
       membershipStatus.admin,
       id,
     ]);
   },
 
   findByEmail: async (email) => {
-    const { rows } = await db.query("select * from member where email = $1", [
+    const { rows } = await query("select * from member where email = $1", [
       email,
     ]);
 
@@ -39,7 +41,7 @@ const memberRepository = {
   },
 
   findById: async (id) => {
-    const { rows } = await db.query("select * from member where id = $1", [id]);
+    const { rows } = await query("select * from member where id = $1", [id]);
     return rows;
   },
 };
