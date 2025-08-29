@@ -37,6 +37,11 @@ const memberRepository = {
 
     return rows;
   },
+
+  findById: async (id) => {
+    const { rows } = await db.query("select * from member where id = $1", [id]);
+    return rows;
+  },
 };
 
 export default memberRepository;
