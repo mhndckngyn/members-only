@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import memberRepository from "../repositories/memberRepository.js";
+import { createRequire } from "module";
 
 const createRequiredChain = (field, fieldName) =>
   body(field).trim().notEmpty().withMessage(`${fieldName} is required`);
@@ -33,4 +34,13 @@ const signupValidators = [
     .withMessage("Passwords don't match"),
 ];
 
-export { signupValidators };
+const messageValidators = [
+  createRequiredChain("title", "Title").isLength({ max: 50 }),
+  createRequiredChain("content", "Content")
+    .isLength({ min: 10, max: 255 })
+    .withMessage("Content must be between 10 and 255 characters."),
+];
+
+const keyValidator = createRequiredChain("key", "Key");
+
+export { signupValidators, messageValidators, keyValidator };

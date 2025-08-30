@@ -9,8 +9,17 @@
     <% if (locals.user) { %>
     <h1>Hello, <%= user.firstName %>!</h1>
     <a href="/logout">Log out</a>
+
+    <p>Membership status: <%= locals.user.status %></p>
+    <% if (locals.user.status !== 'admin') { %> <% if (locals.user.status !==
+    'Secret') { %>
+    <p><a href="/upgrade-secret-member">Upgrade to secret member</a></p>
+    <% } %>
+    <p><a href="/upgrade-admin">Upgrade to admin</a></p>
+    <% } %> <% } else { %>
+    <a href="/login">Log in</a>
     <% } %>
 
-    <p>Successful request</p>
+    <p><a href="/new-message">Post a message</a></p>
   </body>
 </html>

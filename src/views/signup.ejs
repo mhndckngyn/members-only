@@ -6,13 +6,7 @@
     <title>Signup</title>
   </head>
   <body>
-    <% if (locals.errors && locals.errors.length > 0) { %>
-    <ul>
-      <% locals.errors.forEach(function(error) { %>
-      <li><%= error %></li>
-      <% }); %>
-    </ul>
-    <% } %>
+    <%- include('partials/error-list') %>
 
     <form action="/signup" method="post">
       <label for="firstName">First name:</label>

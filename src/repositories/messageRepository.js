@@ -3,7 +3,7 @@ import { query } from "./db.js";
 const messageRepository = {
   getAll: async () => {
     const { rows } = await query(
-      "select message.id as messageId, message.title as messageTitle, message.content messageContent, message.time messageTime, member.firstname + member.lastname as from message join member on message.member_id = member.id"
+      "select m.id as messageId, m.title as messageTitle, m.content as messageContent, m.time as messageTime, concat(member.firstname, ' ', member.lastname) as memberName from message m join member on m.member_id = member.id order by m.time desc"
     );
 
     return rows;
@@ -13,7 +13,7 @@ const messageRepository = {
     const { title, content, memberId } = messageInsertData;
 
     await query(
-      "insert into message (title, content, member_id) values ($1, $2, $3",
+      "insert into message (title, content, member_id) values ($1, $2, $3)",
       [title, content, memberId]
     );
   },

@@ -1,3 +1,4 @@
+import connectPgSimple from "connect-pg-simple";
 import "dotenv/config";
 import express from "express";
 import session from "express-session";
@@ -7,8 +8,7 @@ import { fileURLToPath } from "url";
 import urls from "./config/appUrls.js";
 import "./config/passport.js";
 import memberController from "./controllers/memberController.js";
-import { signupValidators } from "./middlewares/validators.js";
-import connectPgSimple from "connect-pg-simple";
+import messageController from "./controllers/messageController.js";
 import { pool } from "./repositories/db.js";
 
 const app = express();
@@ -33,62 +33,22 @@ app.use(
   })
 );
 app.use(passport.session());
-
 app.use(express.urlencoded({ extended: true }));
 
-app.get(urls.login, async (req, res) => {
-  if (req.user) {
-    return res.redirect(urls.home);
-  }
+app.get(urls.login, memberController.loginGet);
+app.get(urls.signup, memberController.signupGet);
+app.post(urls.login, memberController.loginPost);
+app.post(urls.signup, memberController.signupPost);
+app.get(urls.logout, memberController.logout);
 
-  res.render("login");
-});
+app.get(urls.home, messageController.homepageGet);
+app.get(urls.newMessage, messageController.newMessageGet);
+app.post(urls.newMessage, messageController.newMessagePost);
+app.post(urls.deleteMessage, messageController.deleteMessagePost);
 
-app.post(urls.login, async (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      res.status(500).render("login", {
-        errors: ["There is an unexpected error. Please try again."],
-      });
-    }
-
-    if (info) {
-      res.status(400).render("login", { errors: [info.message] });
-    }
-
-    req.login(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-
-      return res.redirect(urls.home);
-    });
-  })(req, res, next);
-});
-
-app.get(urls.home, async (req, res) => {
-  res.render("home", { user: req.user || null });
-});
-
-app.get(urls.signup, async (req, res) => {
-  if (req.user) {
-    return res.redirect(urls.home);
-  }
-
-  res.render("signup");
-});
-
-app.post(urls.signup, signupValidators, memberController.signupPost);
-
-app.get(urls.logout, async (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-
-    res.redirect(urls.home);
-  });
-});
+app.get(urls.upgradeAdmin, memberController.upgradeToAdminGet);
+app.get(urls.upgradeSecretMember, memberController.upgradeToSecretMemberGet);
+app.post(urls.upgradeAdmin, memberController.upgradeToAdminPost);
 
 const PORT = 3000;
 app.listen(PORT, (err) => {
