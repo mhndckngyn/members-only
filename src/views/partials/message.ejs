@@ -1,0 +1,20 @@
+<hr />
+
+<div>
+  <p><%= message.title %></p>
+  <p><%= message.content %></p>
+  <% if (locals.user && (locals.user.status === 'admin' || locals.user.status
+  === 'secret')) { %>
+  <p>By <%= message.member %></p>
+  <% } else {%>
+  <p>By anonymous club member</p>
+  <% } %>
+
+  <p>Time: <%= message.time %></p>
+
+  <% if (locals.user && locals.user.status === 'admin') { %>
+  <form action="/message/<%= message.id %>/delete" method="post">
+    <button>Delete message</button>
+  </form>
+  <% } %>
+</div>

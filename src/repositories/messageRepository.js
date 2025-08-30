@@ -3,7 +3,7 @@ import { query } from "./db.js";
 const messageRepository = {
   getAll: async () => {
     const { rows } = await query(
-      "select m.id as messageId, m.title as messageTitle, m.content as messageContent, m.time as messageTime, concat(member.firstname, ' ', member.lastname) as memberName from message m join member on m.member_id = member.id order by m.time desc"
+      "select m.id as id, m.title as title, m.content as content, m.time as time, concat(member.firstname, ' ', member.lastname) as member from message m join member on m.member_id = member.id order by m.time desc"
     );
 
     return rows;

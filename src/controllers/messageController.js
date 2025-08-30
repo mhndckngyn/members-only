@@ -7,9 +7,6 @@ import { messageValidators } from "../middlewares/validators.js";
 const messageController = {
   homepageGet: async function (req, res) {
     const messages = await messageRepository.getAll();
-
-    console.log(messages);
-
     res.render("home", { messages, user: req.user || null });
   },
 

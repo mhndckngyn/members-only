@@ -49,6 +49,7 @@ app.post(urls.deleteMessage, messageController.deleteMessagePost);
 app.get(urls.upgradeAdmin, memberController.upgradeToAdminGet);
 app.get(urls.upgradeSecretMember, memberController.upgradeToSecretMemberGet);
 app.post(urls.upgradeAdmin, memberController.upgradeToAdminPost);
+app.post(urls.upgradeSecretMember, memberController.upgradeToSecretMemberPost);
 
 const PORT = 3000;
 app.listen(PORT, (err) => {
